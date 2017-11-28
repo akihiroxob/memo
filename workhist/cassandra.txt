@@ -1,0 +1,31 @@
+cqlsh> create keyspace kukunochi with replication = {'class':'SimpleStrategy', 'replication_factor': 3} ;
+cqlsh> use kukunochi;
+cqlsh:kukunochi> create table article (article_id uuid PRIMARY KEY, title text, body text, category list<uuid>, tag list<uuid>, created_at timestamp, updated_at timestamp, author uuid, contributor list<uuid>, prevs list<uuid>, nexts list<uuid>);
+cqlsh:kukunochi> create table user(user_id uuid primary key, screen_name text, name text, email text, password text);
+cqlsh:kukunochi> create table category(category_id uuid primary key, category text, description text, has int);
+cqlsh:kukunochi> create table tag(tag_id uuid primary key, tag text, description text, has int);
+
+
+
+'xxxxxxxxxxxxxxxx'.replace(/x/g, function() {                                                        
+ar d = Math.floor(Math.random() * 16);                                                          
+return d.toString(16);                                                                           
+});                                                                                                  
+
+
+Namespace {
+  json: [Getter],
+  volatile: [Getter],
+  initAdapter: [Function],
+  use: [Function],
+  run: [Function],
+  in: [Function],
+  to: [Function],
+  add: [Function],
+  remove: [Function],
+  emit: [Function],
+  write: [Function],
+  send: [Function],
+  clients: [Function],
+  compress: [Function]
+}

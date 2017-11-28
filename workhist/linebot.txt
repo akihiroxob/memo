@@ -1,0 +1,39 @@
+Botが最近はやりになってきた。
+今回は、Microsoft Bot Frameworkを試してみようと思う。
+https://dev.botframework.com/
+
+ここのドキュメンテーション曰く、SkypeやSlackなどで色々とできるみたい。
+http://docs.botframework.com/
+大きく3つのパートに分かれているらしい。
+- Connector
+SkypeやSlackとつなぎ込みをするパート
+- BuilderSDK
+Botを作成するためのSDK郡
+- Directory
+Botと投稿する場所
+
+ここではBulderSDKを参照しつつ簡単に遊んでみようと思う。
+http://docs.botframework.com/builder/node/overview/#navtitle
+https://github.com/Microsoft/BotBuilder
+
+環境は下記
+```
+```
+
+1. 必要な物をインストール
+```
+# package.jsonを作るだけ
+$ npm init
+# 必要な物をインストール
+$ npm install --save botbuilder restify
+```
+登録されたDependenciesはこんな感じ
+  "dependencies": {
+    "botbuilder": "^1.0.1",
+    "restify": "^4.1.0"
+  }
+
+2. Hello Worldなサンプルをそのまま写経する
+gitリンク
+
+

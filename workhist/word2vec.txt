@@ -1,0 +1,126 @@
+・ニューラル言語モデル
+・word2vec
+ニューラル言語モデルを元にしたもの
+・Bag-of-Words
+・次元の呪い
+
+Mecab
+Sequence To Sequence Model
+
+c/
+目的はここ。
+それを達成するに辺り、word2vec単語が出てきたのでちょっと試してみた。
+http://tjo.hatenablog.com/entry/2014/06/19/233949
+
+
+$ source tensorflow/bin/activate
+gensim 0.13.1
+https://radimrehurek.com/gensim/models/word2vec.html
+gensimはLDAやLSIなど複数のトピックモデルを実装
+トピックモデルとは、文書中の各単語およびそれらの単語が属するトピックが確率的に生成されていると仮定するモデルです。
+
+$ easy_install -U gensim
+  --upgrade (-U)             force upgrade (searches PyPI for latest versions)
+
+Cython とは C のデータ型を持った Python である
+Cythonを入れる理由は簡単で、これを入れないとword2vecが遅いままというか、入れると70倍にスピードアップするからです。ちなみにcythonはeasy_installでは入らないっぽいので要注意*3。
+
+めかぶを使って分かち書きする
+分かち書きは、単語で空白を開ける書き方
+$ brew install mecab
+
+ipython notebookをつかっていたので真似る
+http://qiita.com/mountcedar/items/fbf57bbc21a7fb820f06
+入れる
+$ pip install ipython
+notebookを使うには下記も必要なようだ
+$ pip install pyzmq
+$ pip install tornado
+$ pip install jinja2
+
+さて、動かすと…エラー！
+>|sh|
+[TerminalIPythonApp] WARNING | Subcommand `ipython notebook` is deprecated and will be removed in future versions.
+[TerminalIPythonApp] WARNING | You likely want to use `jupyter notebook` in the future
+||<
+
+jupyter notebook!! 噂に聞いていたjupyterはipythonのことだったのか！！
+入れなおす…
+$ #依存も入れてくれるらしい…
+$ pip install jupyter
+
+インストできたので実行！！
+$ jupyter notebook
+
+
+使い方わかんねーｗｗｗｗ
+http://www.task-notes.com/entry/20151129/1448794509
+
+
+jupyterの使い方がなんとなくわかったから始めるよ！
+ここからデータを取得。大好きな太宰治より。
+http://www.aozora.gr.jp/cards/000035/files/275_13903.html
+
+これを分かち書きにする
+$ mecab -Owakati text.txt -o data.txt
+param.cpp(69) [ifs] no such file or directory: /usr/local/lib/mecab/dic/ipadic/dicrc
+ぐふ
+別で必要だったのね…
+$ brew install mecab-ipadi
+
+あらためて…
+$ mecab -Owakati text.txt -o data.txt
+input-buffer overflow. The line is split. use -b #SIZE option.
+ふむ。。。
+。で開業してやりなおし
+$ mecab -Owakati text.txt -o data.txt
+OK
+
+
+写経して出来上がり！
+from gensim.models import word2vec
+data = word2vec.Text8Corpus('data.txt')
+model = word2vec.Word2Vec(data, size=200)
+
+out=model.most_similar(positive=[u'テキスト'])
+for x in out:
+    print x[0], x[1]
+
+>|python|
+from gensim.models import word2vec
+data = word2vec.Text8Corpus('data.txt')
+model = word2vec.Word2Vec(data, size=1000)
+
+out=model.most_similar(positive=[u'私'])
+for x in out:
+    print x[0], x[1]
+
+
+---------　以下、結果 ---------
+いる 0.99876588583
+ない 0.998708307743
+こと 0.998691856861
+なっ 0.998683512211
+お母さん 0.998647153378
+から 0.998585879803
+その 0.998432576656
+ある 0.998414158821
+いい 0.998363137245
+たら 0.998356342316
+||<
+
+いる 0.99876588583
+ない 0.998708307743
+こと 0.998691856861
+なっ 0.998683512211
+お母さん 0.998647153378
+から 0.998585879803
+その 0.998432576656
+ある 0.998414158821
+いい 0.998363137245
+たら 0.998356342316
+||<
+
+なんか微妙ｗｗｗ
+これはデータが悪い気がするｗｗ
+しかし、実に楽しい！

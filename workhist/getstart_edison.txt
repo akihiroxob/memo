@@ -1,0 +1,243 @@
+screenでログインするっぽい
+$ screen /dev/tty.usbserial-DN01EZJA 115200 -L
+こっちのほうが確実に接続できる気がする
+$ sudo cu -s 115200 -l /dev/cu.usbserial-DN01EZJA
+
+root@edison:~# configure_edison --setup
+
+パスワードの設定
+```
+Configure Edison: Device Password
+
+Enter a new password (leave empty to abort)
+This will be used to connect to the access point and login to the device.
+Password:       ********
+Please enter the password again:        ********
+First-time root password setup complete. Enabling SSH on WiFi interface.
+The device password has been changed.
+```
+
+デバイスネーム
+```
+Configure Edison: Device Name
+
+Give this Edison a unique name.
+This will be used for the access point SSID and mDNS address.
+Make it at least five characters long (leave empty to skip): danboard
+Is danboard correct? [Y or N]: Y
+
+Do you want to set up wifi? [Y or N]: Y
+```
+
+Wifi
+```
+Configure Edison: WiFi Connection
+
+Scanning: 1 seconds left
+
+0 :     Rescan for networks
+1 :     Exit WiFi Setup
+2 :     Manually input a hidden SSID
+3 :     106F3F295B02_G-3
+4 :     logitec2nd09
+5 :     Buffalo-G-D758
+6 :     106F3F295B02_G
+7 :     pr500k-370998-1
+8 :     pr500k-370998-2
+9 :     Buffalo-G-8820
+10 :    aterm-053a3d-g
+11 :    106F3F295B02_G-1
+12 :    logitec09
+13 :    305ZTa-99A0F5
+14 :    184F32A47D89-2G
+15 :    Buffalo-G-1024
+16 :    o_ob   
+17 :    7CE9D3ABD507
+18 :    4CE676F9B5DC_G
+19 :    W01_64A651B88059
+
+
+Enter 0 to rescan for networks.
+Enter 1 to exit.
+Enter 2 to input a hidden network SSID.
+Enter a number between 3 to 19 to choose one of the listed network SSIDs: 16
+Is o_ob correct? [Y or N]: Y
+Password must be between 8 and 63 characters.
+What is the network password?: ********
+Initiating connection to o_ob. Please wait...
+Attempting to enable network access, please check 'wpa_cli status' after a minute to confirm.
+Done. Please connect your laptop or PC to the same network as this device and go to http://192.168.11.14 or http://danboard.local in your browser.
+```
+
+wifiを設定したらもうあとはsshでやりたいところ。
+22番ポートは最初から空いていた。
+
+
+ここを参考にした
+http://qiita.com/yoneken/items/88165cebbadcc8d6878c
+
+audioは既に認識されていそうだったので、割愛しオーディオ系のやつのみから
+root@danboard:~# lsusb
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 002: ID 0d8c:013c C-Media Electronics, Inc. CM108 Audio Controller
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+
+root@danboard:~# dmesg | grep 'USB PnP Sound Device'
+[ 4822.340933] usb 1-1: Product: USB PnP Sound Device
+[ 4822.374305] input: C-Media Electronics Inc.       USB PnP Sound Device as /devices/pci0000:00/0000:00:11.0/dwc3-host.2/usb1/1-1/1-1:1.3/input/input2
+[ 4822.375097] hid-generic 0003:0D8C:013C.0001: input,hidraw0: USB HID v1.00 Device [C-Media Electronics Inc.       USB PnP Sound Device] on usb-dwc3-host.2-1/input3
+
+
+
+# vi /etc/opkg/base-feeds.conf
+書きを追加
+```
+src/gz all http://repo.opkg.net/edison/repo/all
+src/gz edison http://repo.opkg.net/edison/repo/edison
+src/gz core2-32 http://repo.opkg.net/edison/repo/core2-32
+```
+アップデート
+root@danboard:~# opkg update
+Downloading http://repo.opkg.net/edison/repo/all/Packages.gz.
+Inflating http://repo.opkg.net/edison/repo/all/Packages.gz.
+Updated list of available packages in /var/lib/opkg/all.
+Downloading http://repo.opkg.net/edison/repo/edison/Packages.gz.
+Inflating http://repo.opkg.net/edison/repo/edison/Packages.gz.
+Updated list of available packages in /var/lib/opkg/edison.
+Downloading http://repo.opkg.net/edison/repo/core2-32/Packages.gz.
+Inflating http://repo.opkg.net/edison/repo/core2-32/Packages.gz.
+Updated list of available packages in /var/lib/opkg/core2-32.
+Downloading http://iotdk.intel.com/repos/1.5/intelgalactic/Packages.
+Updated list of available packages in /var/lib/opkg/iotkit.
+
+これでインストールできる
+root@danboard:~# opkg install alsa-utils
+Installing alsa-utils (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-speakertest (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-speakertest_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-midi (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-midi_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-aseqnet (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-aseqnet_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-aconnect (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-aconnect_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-iecset (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-iecset_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-alsaloop (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-alsaloop_1.0.28-r0_core2-32.ipk.
+Installing libsamplerate0 (0.1.8-r1) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/libsamplerate0_0.1.8-r1_core2-32.ipk.
+Installing alsa-utils-alsaucm (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-alsaucm_1.0.28-r0_core2-32.ipk.
+Installing alsa-utils-aseqdump (1.0.28-r0) on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/alsa-utils-aseqdump_1.0.28-r0_core2-32.ipk.
+Configuring libsamplerate0.
+Configuring alsa-utils-alsaloop.
+Configuring alsa-utils-alsaucm.
+Configuring alsa-utils-midi.
+Configuring alsa-utils-iecset.
+Configuring alsa-utils-aconnect.
+Configuring alsa-utils-speakertest.
+Configuring alsa-utils-aseqnet.
+Configuring alsa-utils-aseqdump.
+Configuring alsa-utils.
+
+# 音量設定
+root@danboard:~# alsamixer
+F6で該当のものにして、上下で音量を変更
+終わったらesc
+
+次にaplayで利用するデバイスを探す
+root@danboard:~# aplay -L
+ここでUSB PnP Sound Deviceなものを探す。
+今回では
+# aplay -L
+default:CARD=Device
+    USB PnP Sound Device, USB Audio
+    Default Audio Device
+とあるのでこれを指定
+# aplay -D sysdefault:CARD=Device ./tekitou.wav
+
+
+root@danboard:~/voice# opkg list | grep node
+ (UUID). It supports DCE 1.1 variant UUIDs of version 1 (time and node
+ (UUID). It supports DCE 1.1 variant UUIDs of version 1 (time and node
+ (UUID). It supports DCE 1.1 variant UUIDs of version 1 (time and node
+ 1 (time and node   based), version 3 (name based, MD5), version 4 (random
+ DCE 1.1 variant UUIDs of version 1 (time and node   based), version 3
+libwyliodrin - 2.4-r0 - libwyliodrin version 2.4-r0  helper library for wyliodrin nodejs server
+ wyliodrin nodejs server  This package contains ELF   symbols and related
+ wyliodrin nodejs server  This package contains   symbolic links, header
+nodejs - v4.4.3-r1.0 - Node.js is a platform built on Chrome's JavaScript runtime for easily
+nodejs - 0.10.38-r0
+nodejs-dbg - v4.4.3-r1.0 - Node.js is a platform built on Chrome's JavaScript runtime for easily
+nodejs-dev - v4.4.3-r1.0 - Node.js is a platform built on Chrome's JavaScript runtime for easily
+nodejs-dev - 0.10.38-r0
+nodejs-doc - v4.4.3-r1.0 - Node.js is a platform built on Chrome's JavaScript runtime for easily
+nodejs-npm - v4.4.3-r1.0 - Node.js is a platform built on Chrome's JavaScript runtime for easily
+nodejs-npm - 0.10.38-r0
+nodejs-systemtap - v4.4.3-r1.0 - Node.js is a platform built on Chrome's JavaScript runtime for easily
+nodejs4 - 0.4.12-r0 - nodeJS Evented I/O for V8 JavaScript  nodeJS Evented I/O for V8
+nodejs4-dbg - 0.4.12-r0 - nodeJS Evented I/O for V8 JavaScript - Debugging files  nodeJS Evented
+nodejs4-dev - 0.4.12-r0 - nodeJS Evented I/O for V8 JavaScript - Development files  nodeJS Evented
+nodejs4-doc - 0.4.12-r0 - nodeJS Evented I/O for V8 JavaScript - Documentation files  nodeJS
+root@danboard:~/voice# opkg install nodejs
+Upgrading nodejs from 0.10.38-r0 to v4.4.3-r1.0 on root.
+Downloading http://repo.opkg.net/edison/repo/core2-32/nodejs_v4.4.3-r1.0_core2-32.ipk.
+Removing obsolete file /usr/bin/npm.
+Configuring nodejs.
+root@danboard:~/voice# opkg install nodejs-npm
+
+ここでついでにgitも
+root@danboard:~# opkg install git
+
+
+OPEN JTALKを入れる
+http://open-jtalk.sourceforge.net/
+hts-engine
+root@danboard:~/openjtalk# wget http://downloads.sourceforge.net/hts-engine/hts_engine_API-1.09.tar.gz
+root@danboard:~/openjtalk/hts_engine_API-1.09# ./configure 
+root@danboard:~/openjtalk/hts_engine_API-1.09# make
+root@danboard:~/openjtalk/hts_engine_API-1.09# make install
+
+jtalk
+root@danboard:~/openjtalk# wget http://downloads.sourceforge.net/open-jtalk/open_jtalk-1.09.tar.gz
+root@danboard:~/openjtalk/open_jtalk-1.09# ./configure --with-charset=UTF-8
+root@danboard:~/openjtalk/open_jtalk-1.09# make install
+
+cat input.txt | open_jtalk -m /usr/local/share/open_jtalk/hts_voice/nitech_jp_atr503_m001.htsvoice -ow out.wav -x /usr/local/share/open_jtalk/open_jtalk_dic_utf
+
+
+次サーボ
+はんだ付け
+mraaとやらで動かすので準備する
+# echo "src mraa-upm http://iotdk.intel.com/repos/3.5/intelgalactic/opkg/i586" > /etc/opkg/mraa-upm.conf
+# opkg update
+# opkg install libmraa0
+npm install mraa
+
+
+と思ったら結局使わず！
+npmのパッケージ２つでアクセスできるようになる。
+ただし、電圧が低すぎるので外部電源をつけるか、vsysとvinのジャンパーをつなぐ必要があるっぽい
+つなぐと4vは確保できるっぽい。
+ちなみにしなかったら0.3vぐらいしかない。
+これでうぃんうぃん動くようになる！
+
+LEDの装着
+LEDをはんだ付け。
+PWMで電力の調整ができそうなのでそのままで接続。
+最大4vなのできっと大丈夫！
+
+sigとgndに接続する必要あり。
+vinに入れると制御ができずそのまま4Vが流れ続けるっぽい。
+これで音声と目の光が出来た。
+コードもサーボとほぼ同様のものでできる。
+
+これで音声と動きと目の光が出来上がった。
+細かいことは本体を組み込みながら実施する。
+
+
+
+

@@ -1,0 +1,25 @@
+DANBOARD 2,800
+http://www.kotobukiya.co.jp/product/product-0000001112/
+Intel Edison 8,100
+https://www.switch-science.com/catalog/1956/
+Intel Edison Block - PWM 2,492
+https://www.switch-science.com/catalog/1989/
+Intel Edison Block - Base 4,117
+https://www.switch-science.com/catalog/1991/
+GWSサーボ PIC/STD/F（フタバ） 800
+http://akizukidenshi.com/catalog/g/gM-01905/
+3D オーディオ サウンド カード アダプター 150
+https://www.amazon.co.jp/%E3%82%AA%E3%83%BC%E3%83%87%E3%82%A3%E3%82%AA-%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF%E3%83%BC-%E4%BB%AE%E6%83%B35-1-%E3%83%98%E3%83%83%E3%83%89%E3%82%BB%E3%83%83%E3%83%88-virtual/dp/B008YLNS7O/ref=sr_1_8?ie=UTF8&qid=1471075134&sr=8-8&keywords=usb%E3%82%B5%E3%82%A6%E3%83%B3%E3%83%89%E3%82%A2%E3%83%80%E3%83%97%E3%82%BF%E3%83%BC
+
+
+言ったものをそのまま動くものが作れる
+クラスやメソッドを正しく分けて使っている
+ソース単位で詳細設計ができる
+複数モジュールを組み合わせた設計ができる
+データ構造とデータの流れを意識できる
+システム全体の仕組みを設計できる
+システムに応じてFrameworkや言語を選択できる
+デザイン・UXを意識しつつ仕組みを考えている
+チーム開発を行うための手法を理解している
+チームメンバの得手不得手を認識している
+プロジェクトを考えている

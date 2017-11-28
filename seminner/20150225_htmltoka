@@ -1,0 +1,147 @@
+Mozilla　Japan
+あさのさん
+
+PerformancesとExpandation
+    MobOpenHardwareをFacebookで検索すると出てくるっぽい。
+
+WebAPI
+スマホができることは当たり前。その次へ。
+ゲームプラットフォーム
+    asm.js
+        ゲームがばりばり動く話
+        Nativeばりにうごくようになってきている Marmalade聞いたことあるな。
+        マルチスレッドとかマルチメディア演算のところにやられている
+        そこさえクリアできれば差はないとまで明言している
+        WebGLか。
+        わからなくなったら、Mozillaが一緒に作ってくれるらしいｗ
+        ディズニーさんとかもやってるとか。
+        つむつむか？
+        CodeIQさんがWebで3Dをやりたいってことを MartinBestや Vladimir Vukicevic
+    FoxEye
+        動画のリアルタイム画像処理
+        WebRTCがあればリアルタイムでP2Pで対戦とかファイル共有とかすごい
+        Mozillaはずっとパフォーマンスを向上するための施策を考えているんだな。
+        すごいすごい。
+            WokerTheradをたくさんばりばりとか。頑張ってる。
+            正直、マルチスレッドは触りたくない。
+        OpenCVをasmjsで変換、そんなことができるようになるのか。
+
+        OCRをガンガンできるように使用としているPJだったｗ
+        文字認識処理をブラウザで走らせて、画像の文字でも選択できるようにしたりする。
+    WebVR
+        Googleさんとやっている。
+        先月、WebVRイベントを行っている。
+    電子書籍・組版技術
+        OpenTypeFontFeatures
+        縦書(CSSWritingMode
+        ルビも使えるようになる
+    LowerLevel
+        asm.js
+        SIMD(EcmaScript 7th
+        WebGPIO, WebI2C
+
+        asm.js
+            型の明示(Annotation)も既存Javascriptを
+            TypedArray
+            JITによる最適化
+        SIMD命令？
+            SIMD 複数データの並列同時計算
+            128bit SIMDモジュール
+            SIMD.jsとかあんのかよ
+        WebGPIO、WebI2C
+            組み込み機器の汎用APIも
+            W3C　Web Robotics　CG
+            Open Hardwareプロジェクト
+            組み込み機器も直接使おう
+
+    3/17 FirefoxOS勉強会
+        本間さんが話すらしい
+        JSからルンバをうごく
+        はたのひとみさん
+
+    Platform
+        WEB OF THINGS
+                FirefoxOS
+        Web is the Platform
+
+        @dynamitter
+
+
+
+ServiceWorkerが招く、MobileWebの新しい形
+    KinukoYasuda
+
+なぜServiceWorkerがExcitingなのか？
+    Web is Awesome!!
+    2014はNativeアプリが躍進する
+        Speedがはやい
+        Offline時のUX
+        PushなどのReEngagementがない
+
+    Speed Load時間
+        待ってられるのは1秒が限界といわれてますね。ええ。
+    Offline
+        AppCacheがかなり古くからあるらしい。
+        Cashmanifestの話
+    ReEngagement
+        NotificationAPIはあるが、タブを閉じると動かない。
+
+ServiceWorkerとは
+    AppCacheを置き換えるOfflineAPI
+    ブラウザ内で動作するJSネットワークプロキシ
+
+    つまり、バックグラウンドで動作するJavaScript環境
+        ページのNetworkリクエストの横取りができるとかある
+
+    CasheAPIとFetchAPIがある
+        CacheAPI、HTTPリクエストを理解して…
+        FetchAPI、XHRより低レイヤの置き換え。CrossOriginとかブラウザが裏側で行ってきたことをやっているらしい。
+            The Extensible Web Manifest
+
+ライフサイクル
+    installイベント
+    activateイベント
+    Fetchイベント
+
+
+結構細かい処理ができる。
+    Cross　Origin系のものはFilterがある。
+    ServiceWorkerはシンプルに使用としている。
+    ServiceWorkerはHostに対して挙動するようにする。
+    そして、おそらくブラウザに対してインストールする。
+    コントロールされているServiceWorkerが他のものが終わらないと処理がされない？
+        なんかおかしいと思ったら、すべてのページを閉じるといい
+        それでもダメなら、Command Shift Rかインスペクタみたいの見ましょう
+    GoogleI/Oは5月末
+        そして、GoogleIOのページはOfflineでもほぼ動きます。
+    4月からPushが受け取れて表示できるようなものができるらしい。
+        これってもしかして、あれか。tabを閉じていてもPushが受け取れるようになる臭い。
+        なにそれすごい
+    Securityは？
+        HTTPSとLocalhostでしか動かない
+        同一Originでしかコントロールできないとかいろいろある
+        Service-WorkerっていうHeaderがある。
+    ロード時間の短縮
+    オフラインの対応
+    Pushも受け取れる
+    対応していないブラウザには通常。対応しているものはUXが向上する。
+        いいコトづくし！
+        FFでも試せる。
+
+http://bit.ly/vote-ie-sw
+
+オフラインとかみれる？
+    navigator.onLineで確認できる
+        false = Offline
+        true  = online
+    もう少し違う仕組みが別でできるらしく、それができると
+    オフラインに書き込みしたものを、オンラインになった時に書き込むといったことができるようになるらしい。
+
+キャッシュの上限は？
+    くおーたーAPIというものがあって、一応とれるがFFと調整中。
+    Chromeでは取れる。
+
+
+The Offline Cookbook
+    すごくいいらしい。
+

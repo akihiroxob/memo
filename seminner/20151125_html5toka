@@ -1,0 +1,276 @@
+//---------------------------------------------
+// 
+// 
+//---------------------------------------------
+SMACSS
+BEM
+RSCSS
+
+CSSの問題
+    Global NameSpace
+    依存関係
+    DeadCodeEliminate
+
+CSS in JS
+    React Style
+        LocalScopeで行えるのでは？
+            CSSを書いていた人は嫌う
+    CSS Modules
+        CSSは普通にCSSとして書く
+        CSSファイルをJSからインポートする
+    Shadow Dom
+        Webkitでは実装の記事はでてたが2016年もまだ
+
+HTML CSSだけではどうしようもない！
+    Don't overdo it
+    設計である程度カバーするのが大事
+
+
+CSSのフレームワークについて
+    すごい確信的なものはなかった
+
+    Bootstrap
+        DW CC 2015 NativeでBootstrap
+        Bootstrap Studio
+    Foundation
+        Bootstrapsとの二本柱
+    Material Design Lite
+        Googleからでたもの
+        基本的には純粋なCSSでマテリアルデザインができる
+    Lightning Design System
+        Sellsforsがやっている感じ
+        いろいろやってんああそこ
+
+Layout
+　  新しい書き方が出てきている
+
+    Flexbox
+    Grid
+
+svg
+    色々なトピックはあるが今日は下記
+    Icon FontとSVG
+
+    レビューが一通目が馬に。
+        特定の端末で違うフォントになっている
+        文字コードがOSで利用していると起こりえる
+        潜在的なバグ
+        -> なのでフォントから離れようという動きがある
+
+    SVGはモダンブラウザでは利用できる
+    書き方
+      1. <img src="svg" />
+      2. <svg></svg> use要素を利用すると外部から呼び出せる
+    SVG Sprites
+        この中に沢山のデータが入っていて、Use要素で参照<use xlinks:href="svgsprite#pencil">
+
+SaraSoueidanさんをおってると、SVGの深い情報がでる
+
+calc()
+filter, blend-mode
+image-set(), script picture
+writing-mode,
+:node() :matches()
+
+
+CSS Houdini
+矢倉まさたか　箱 が一案わかりやすい
+    CSS Layout APIなど
+
+Conclusion
+    それなりに面白いトピックがあった
+    css makes Css fun again
+
+
+
+//---------------------------------------------
+// まぁまぁ最近のCSSあたり
+// Masataka Yakura / @myakura
+//---------------------------------------------
+CSSの担当範囲
+    ページのレイアウト
+    部品のレイアウト
+    コンテンツの装飾
+    UIまわりの挙動
+
+CSSの進捗どうですか？
+    フィードバック待ち
+    実装待ち
+    テストスイート待ち
+    細かいところを詰めている
+
+Selector(:hover系
+    selectors level4がSafari9に入っていたりする
+    CSS4の実装はすすんでいる
+    Brinkは結構開発している 
+    WebKitもFirefoxも動くようになってきている
+    Edgeもまだちょっと… けど動くようになってきた
+    例) backdrop-filter:blur(10px);
+
+
+Houdini(ふうでぃーに
+    新しいのに手を出したいが古い環境では対応していない
+    CSSのマジックを暴いていこう、そこに開発者がハックしていこう
+    それが Houdini
+    CSSをJSで再現していく。そして動くようにしていく。
+
+    Properties And Values API
+        Variablesの発展形。
+        値も決められる。
+    Painting API
+        Canvasを使って描画処理を定義
+    Typed OM
+        文字列いじいじだったCSSOM
+        オブジェクトに！
+    Worklets
+        すっごい小さい砂場。ワーカーみたいなもの。
+
+Houdini APIは早くなければならない
+レイアウトやフォント周りも… 息の長いプロジェクト
+
+CSSだけで作っている
+    scroll-snap-type:
+    scroll-snap-coなんとか
+
+
+//-------------------
+// PostCSS
+// @morishitter_
+//-------------------
+PostCSSとは
+    GitHubのプロジェクト
+    CodePenでも使えるとか
+
+    ByAndrey Sitnil
+    Nodejs製CSSぱーさー
+    ASTを操作する
+
+PostCSSの歴史
+    PostCSSのようなツールはあった
+        rework
+        reworkを使って、Autoprefixerを作った
+        いけてないので自分で作成 うまれた！
+PostCss v1 is a framewaork for Css Postprocessors
+PostCss v2 - v4 大量のプラグインが作成
+Postprocessors
+
+PostCss v5
+ Custom Syntaxes
+    Css以外の構文のパースを書いてパースできるように
+    Css in JS
+
+PostCssのパフォーマンス
+    とりあえず、早い！！
+    Stylusよりも遥かに早い！！
+    Autoprefixerとしても早い！！
+
+PostCss製ツール
+    プラグイン
+        Autoprefixer
+            Can I Use
+        stylelint
+            EsLintのように柔軟な設定ができる
+        cssnano
+            CSSのminifyツール
+        preCss
+            PostCss製プリプロセッサー
+        CSS Modules
+            CSSおスタイルの影響範囲をコンポーネントないで閉じようとする試みたいなもの
+        CSSfmt
+            フォーマッティングオプションが無い。一切ない。
+Css Next
+    Maxime Thirouin
+    現在策定段階でブラウザが未実装のCSSの記法を今のブラウザが解釈できるようにするもの
+
+    Custom Properties
+    Custom Media Queries
+    Meia Query Ranges
+    Custom selectors
+{    Color function
+
+cssnextを使うと未来のCSSが使える！！
+
+tabatkins/specs
+    CSS @apply Rule
+        Sussのmixinみたいなかんじ
+    CSS Extends Rule
+        Suss
+
+PostCss.parts
+プラグイン同士に依存関係があるので
+gulpでのrequireの順番には気をつけましょ
+
+
+//--------------------------------
+// CSS element querys
+// sakamaki shotaro
+// @GeckoTang
+//--------------------------------
+月額800円で素敵な記事が読めるよ！！
+
+CSS Element Queritesとは
+　要素の幅や高さに応じたスタイルを適応できるようにするためのJSライブラリ IE7+
+
+つかいかた
+ 1. ライブラリを読み込む
+ 2. CSSを書く
+    かき方が不思議。
+    .widget-1 {
+        color: gray;
+    }
+    .widget-1[max-width~="400px"] {
+        color: red;
+    }
+
+
+Media Queritesとちがうの？
+ビューポートか要素の幅かの違い
+
+デモ
+・幅が変わると2カラムになる
+・高さに応じて見た目を変える
+・要素の幅や高さが変更したことを検知する
+・期待通りに動かないデモ
+　あとから追加されたら動かないので
+　ElementQueries.update()で更新してね！
+
+どうやってやってるの？
+  ページが読み込まれた時に、CSSを解析し、対象の要素ごとに、その要素の幅などを計測する要素を配置する
+　計測する要素がうんたらかんたら
+
+きをつけること
+    img要素では動かない！
+    CSSはValidだけど、使用には存在しないので。。。
+    positionを勝手にrelativeにする
+    ことなるドメインから読み込んでいるCSSはえらー！
+
+使う…？
+    使わない。うん、これ使わない！！いらない！
+
+計測の方法が面白い
+　そのへんは見ておくと参考になると思うのでソースを見てみよう！！！
+
+
+//------------------------------------------
+// CSS検証(教育)むずすぎ・・・ だからツールを作ってみました
+// igari Takeharu
+//-------------------------------------------
+TPAC sapporoでツールの発表をしてきた
+
+現在のCSSバリデータの問題点とは(進化する一方副ざく化している
+・JSで更新されたDOMやスタイルに対して検証できない
+・計算されたスタイルに対して検証ができない
+・スタイルとスタイルの組み合わせに対して良し悪しが検証できない
+
+目視で頑張ってテストするしかない。
+W3Cバリデータだとシンタックスしか検証不可
+JetBrainsの「いんてりじぇい」とか
+
+NGなスタイルとは
+    flexbox absoluteの下のdisplayは何を指定してもblockに。。
+    spanはauto
+    img:afterは動かない。
+    親なしのtable-cellはバギー
+    RWDでのミス
+
+
